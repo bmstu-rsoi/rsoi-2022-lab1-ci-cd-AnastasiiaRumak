@@ -3,30 +3,36 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	_ "database/sql"
-
-	"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/person/repository"
-	"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/person/usecase"
+	//"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/person/repository"
+	//"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/person/usecase"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
+	_ "github.com/lib/pq" // ...
+
+	//"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/configure"
+	"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/person/delivery"
+	"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/person/repository"
+	"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/person/usecase"
 )
+
+  
 
 const (
-	dsn = "serverName=localhost;databaseName=test;user=testuser;password=testpassword"
+	//dsn = "serverName=localhost;databaseName=test;user=postgres;password=postgres"
+	//dsn = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", "postgres", "postgres", "postgres", 5432, "postgres")
 )
 
-func main() {
 
-	/*
-		listenAddr := os.Getenv("LISTEN_ADDR")
-		if len(listenAddr) == 0 {
-			listenAddr = ":8080"
-		}
-	*/
-	dbConf := configure.NewLocal()
-	//db, err := sqlx.Connect("postgres", dsn)
-	db, err := sqlx.Connect("postgres", dbConf.GetDSN())
+
+
+
+
+func main() {
+	//db, err := sqlx.Connect("postgres", fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", "localhost",5432,"postgres", "postgres", "postgres"))
+	db, err := sqlx.Connect("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal(fmt.Errorf("error connecting to database: %w", err))
 	}
@@ -38,7 +44,6 @@ func main() {
 	e := echo.New()
 	handler.Configure(e)
 
-	//log.Fatsl(e.Start(address: "https://localhost:8890"))
-	//log.Fatal(http.ListenAndServe(listenAddr, nil))
-	log.Fatal(e.Start(configure.GetConnString()))
+	//log.Fatal(e.Start("localhost:8080"))
+	log.Fatal(e.Start(fmt.Sprintf(":%s", os.Getenv("PORT"))))
 }

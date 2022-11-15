@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-
 	_ "database/sql"
 	//"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/person/repository"
 	//"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/person/usecase"

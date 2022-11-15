@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	apiPrefix = "/api/v1"
-	locationValueFormat = "/api/v1/persons/%d"
+	apiPrefix = "" // "/api/v1"
+	locationValueFormat = "/persons/%d" //"/api/v1/persons/%d"
 )
 
 type Handler struct {

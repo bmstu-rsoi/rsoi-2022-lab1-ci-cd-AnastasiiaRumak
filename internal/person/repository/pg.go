@@ -70,7 +70,7 @@ func (p *PG) GetAll(ctx context.Context) (*[]models.Person, error) {
 	}
 	defer rows.Close()
 
-	var persons []models.Person
+	var persons = make([]models.Person, 0)
 	for rows.Next() {
 		var person BDlist
 		err = rows.StructScan(&person)
@@ -90,7 +90,6 @@ func (p *PG) UpdatePerson(ctx context.Context, person models.Person) error {
 	_, err := p.db.ExecContext(ctx, updateQuery, person.Name, person.Age, person.Address, person.Work, person.ID)
 	return err
 }
-
 
 type BDlist struct {
 	ID      int64  `db:"id"`

@@ -16,6 +16,8 @@ jobs:
           fetch-depth: 0
 
       # TODO build, test and deploy project
+
+      
             - name: Install Go
         uses: actions/setup-go@v2
         with:

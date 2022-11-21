@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	apiPrefix = "" // "/api/v1"
-	locationValueFormat = "/persons/%d" //"/api/v1/persons/%d"
+	apiPrefix =  "/api/v1"
+	locationValueFormat = "/api/v1/persons/%d"
 )
 
 type Handler struct {
@@ -50,18 +50,10 @@ type response struct {
 	Work    string `json:"work"`
 }
 
-
-
-
-
-
-
 func (h *Handler) CreatePerson() echo.HandlerFunc {
 
 	return func(ctx echo.Context) error {
 		var req request//**
-		//req := &request{}
-		//req := &person{}
 
 		if err := ctx.Bind(req); err != nil {
 			//return err
@@ -74,7 +66,6 @@ func (h *Handler) CreatePerson() echo.HandlerFunc {
 		locationValue := fmt.Sprintf(locationValueFormat,id)
 		ctx.Response().Header().Set("Location", locationValue)
 
-		//ctx.Response().Header().Set("Content-Type", "application/json")
 		return ctx.JSON(http.StatusCreated, nil)
 	}
 }
@@ -92,7 +83,6 @@ func (h *Handler) DeletePerson() echo.HandlerFunc {
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}
 
-		//ctx.Response().Header().Set("Content-Type", "application/json")
 		locationValue := fmt.Sprintf(locationValueFormat,id)
 		ctx.Response().Header().Set("Location", locationValue)
 
@@ -102,7 +92,6 @@ func (h *Handler) DeletePerson() echo.HandlerFunc {
 
 func (h *Handler) UpdatePerson ()  echo.HandlerFunc {
 	return func(ctx echo.Context) error {
-		//req := &person{}
 		var req request//**
 		//req := &request{}
 		if err := ctx.Bind(req); err != nil {
@@ -116,9 +105,6 @@ func (h *Handler) UpdatePerson ()  echo.HandlerFunc {
 
 		updated, err := h.usecase.UpdatePerson(context.Background(), toModel(req))
 		if err != nil {
-			/*if errors.Is(err, repository.ErrNoPersonWithSuchID) {
-				return ctx.JSON(http.StatusNotFound, httpError{Message: ""})
-			}*/
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}
 
@@ -136,9 +122,7 @@ func (h *Handler) GetPersonID () echo.HandlerFunc {
 
 		model, err := h.usecase.GetPersonID(context.Background(), id)
 		if err != nil {
-			/*if errors.Is(err, repository.ErrNoPersonWithSuchID) {
-				return ctx.JSON(http.StatusNotFound, httpError{Message: ""})
-			}*/
+
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}
 
@@ -164,14 +148,9 @@ func (h *Handler) GetAll() echo.HandlerFunc {
 	}
 }
 
-
-
-
-
-
-
 func fromModel(m models.Person) response {
 	return response{
+	
 		ID:      m.ID,
 		Name:    m.Name,
 		Age:     m.Age,
@@ -205,14 +184,5 @@ func toModel(req request) models.Person {
 	ctx.Response().Header().Get( "Location", locationValue)
 
 	return ctx.JSON(http.StatusCreated, nil)
-
-	
-}*/
-
-/*func (h *Handler) DeletePerson() echo.HandlerFunc {
-
-}
-
-func (h *Handler) GetAll() echo.HandlerFunc {
 
 }*/

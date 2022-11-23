@@ -36,7 +36,7 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.4.6
         with:
           heroku_api_key: 5b3fd2e6-8846-41ba-b689-770ba98cb396
-          heroku_app_name: nameless-woodland-39650
+          heroku_app_name: rsoi-lab-11
           heroku_email: stasia.beliver@gmail.com
           usedocker: true
 

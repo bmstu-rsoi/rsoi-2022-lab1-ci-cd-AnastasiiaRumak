@@ -57,7 +57,7 @@ func (p *PG) GetPersonID(ctx context.Context, id int64) (models.Person, error) {
 		return models.Person{}, err
 	}
 
-	return person.toModel(), nil
+	return toModel(person), nil
 }
 
 func (p *PG) GetAll(ctx context.Context) (*[]models.Person, error) {
@@ -74,7 +74,7 @@ func (p *PG) GetAll(ctx context.Context) (*[]models.Person, error) {
 		if err != nil {
 			return nil, err
 		}
-		persons = append(persons, person.toModel())
+		persons = append(persons, toModel(person))
 	}
 	if err = rows.Err(); err != nil {
 		return nil, err
@@ -96,7 +96,8 @@ type BDlist struct {
 	Work    string `db:"work"`
 }
 
-func (b *BDlist) toModel() models.Person {
+//func (b *BDlist) toModel() models.Person {
+func toModel(b BDlist) models.Person {
 	return models.Person{
 		ID:      b.ID,
 		Name:    b.Name,

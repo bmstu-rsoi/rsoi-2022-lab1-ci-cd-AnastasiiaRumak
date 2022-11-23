@@ -24,7 +24,7 @@ func NewHandler(u usecase) *Handler {
 }
 
 func (h *Handler) Configure(e *echo.Echo) {
-	e.POST(apiPrefix+"persons", h.CreatePerson())
+	e.POST(apiPrefix+"/persons", h.CreatePerson())
 
 	e.DELETE(apiPrefix+"/persons/:id", h.DeletePerson())
 	e.PATCH(apiPrefix+"/persons/:id", h.UpdatePerson())

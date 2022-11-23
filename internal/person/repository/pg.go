@@ -33,13 +33,10 @@ func (p *PG) CreatePerson(ctx context.Context, person models.Person) (int64, err
 	var id int64
 	err := row.Scan(&id)
 	row.Scan(&id)
-
 	if err != nil {
 		return 0, err
 	}
-
 	return id, nil
-
 }
 
 
@@ -99,12 +96,12 @@ type BDlist struct {
 	Work    string `db:"work"`
 }
 
-func (d *BDlist) toModel() models.Person {
+func (b *BDlist) toModel() models.Person {
 	return models.Person{
-		ID:      d.ID,
-		Name:    d.Name,
-		Age:     d.Age,
-		Address: d.Address,
-		Work:    d.Work,
+		ID:      b.ID,
+		Name:    b.Name,
+		Age:     b.Age,
+		Address: b.Address,
+		Work:    b.Work,
 	}
 }

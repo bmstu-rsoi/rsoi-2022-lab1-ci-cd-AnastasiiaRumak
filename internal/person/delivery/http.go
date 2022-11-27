@@ -124,18 +124,19 @@ func (h *Handler) UpdatePerson ()  echo.HandlerFunc {
 		}
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 		if err != nil {
+			
 			return ctx.JSON(http.StatusBadRequest, nil)
 		}
 		req.ID = id
 
-		updated, err := h.usecase.UpdatePerson(context.Background(), toModel(req))
+		update, err := h.usecase.UpdatePerson(context.Background(), toModel(req))
 		if err != nil {
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}
 //
 		ctx.Response().Header().Set("Content-Type", "application/json")
 //		
-		return ctx.JSON(http.StatusOK, fromModel(updated))
+		return ctx.JSON(http.StatusOK, fromModel(update))
 	}
 }
 

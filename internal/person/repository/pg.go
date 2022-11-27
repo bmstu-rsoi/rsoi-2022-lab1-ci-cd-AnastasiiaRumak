@@ -55,7 +55,7 @@ func (p *PG) GetPersonID(ctx context.Context, id int64) (models.Person, error) {
 	err := row.StructScan(&person)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return models.Person{}, ErrNoPersonWithSuchID
+			return models.Person{}, errors.New("no person with such ID")
 		}
 		return models.Person{}, err
 	}
@@ -101,7 +101,6 @@ type BDlist struct {
 	Work    string `db:"work"`
 }
 
-//func (b *BDlist) toModel() models.Person {
 func toModel(b BDlist) models.Person {
 	return models.Person{
 		ID:      b.ID,

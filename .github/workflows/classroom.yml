@@ -29,9 +29,6 @@ jobs:
       - name: Build
         run: go build cmd/app/main.go
 
-      - name: Test
-        run: go test ./...
-
       - name: Deploy project
         uses: akhileshns/heroku-deploy@v3.4.6
         with:
@@ -41,20 +38,12 @@ jobs:
           usedocker: true
 
       - name: Run API Tests
-        uses: matt-ball/newman-action@master
+         uses: anthonyvscode/newman-action@v1
         with:
           collection: postman/[inst] Lab1.postman_collection.json
           environment: postman/[inst][heroku] Lab1.postman_environment.json
-          delayRequest: 100
-          reporters: '[ "cli" ]'
-
-      - name: Run API Tests
-        uses: matt-ball/newman-action@master
-        with:
-          collection: postman/[inst] Lab1.postman_collection.json
-          environment: postman/[inst][heroku] Lab1.postman_environment.json
-          delayRequest: 100
-          reporters: '[ "cli" ]'
+          delayRequest: 50
+          reporters: cli
 
       - name: Autograding
         uses: education/autograding@v1

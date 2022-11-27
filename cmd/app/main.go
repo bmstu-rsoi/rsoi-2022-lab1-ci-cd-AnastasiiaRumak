@@ -22,10 +22,6 @@ const (
 )
 
 
-
-
-
-
 func main() {
 	//db, err := sqlx.Connect("postgres", fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", "localhost",5432,"postgres", "postgres", "postgres"))
 	db, err := sqlx.Connect("postgres", os.Getenv("DATABASE_URL"))
@@ -40,6 +36,5 @@ func main() {
 	e := echo.New()
 	
 	handler.Configure(e)
-	//log.Fatal(e.Start("localhost:8089"))
 	log.Fatal(e.Start(fmt.Sprintf(":%s", os.Getenv("PORT"))))
 }

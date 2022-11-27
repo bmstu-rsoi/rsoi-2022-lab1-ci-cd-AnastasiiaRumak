@@ -11,7 +11,6 @@ import (
 )
 
 const (
-	apiPrefix =  "/api/v1"
 	locationValueFormat = "/api/v1/persons/%d"
 )
 
@@ -24,12 +23,12 @@ func NewHandler(u usecase) *Handler {
 }
 
 func (h *Handler) Configure(e *echo.Echo) {
-	e.POST(apiPrefix+"/persons", h.CreatePerson())
+	e.POST("/api/v1/persons", h.CreatePerson())
 
-	e.DELETE(apiPrefix+"/persons/:id", h.DeletePerson())
-	e.PATCH(apiPrefix+"/persons/:id", h.UpdatePerson())
-	e.GET(apiPrefix+"/persons/:id", h.GetPersonID())
-	e.GET(apiPrefix+"/persons", h.GetAll())
+	e.DELETE("/api/v1/persons/:id", h.DeletePerson())
+	e.PATCH("/api/v1/persons/:id", h.UpdatePerson())
+	e.GET("/api/v1/persons/:id", h.GetPersonID())
+	e.GET("/api/v1/persons", h.GetAll())
 	
 }
 
@@ -51,8 +50,7 @@ type response struct {
 }
 
 func fromModel(m models.Person) response {
-	return response{
-	
+	return response{	
 		ID:      m.ID,
 		Name:    m.Name,
 		Age:     m.Age,
@@ -77,7 +75,6 @@ func (h *Handler) CreatePerson() echo.HandlerFunc {
 		//var req request//**
 		var req request//**
 
-		//req := &request{}
 		if err := ctx.Bind(&req); err != nil {
 			//return err
 			return ctx.JSON(http.StatusBadRequest, err)
@@ -90,7 +87,8 @@ func (h *Handler) CreatePerson() echo.HandlerFunc {
 		ctx.Response().Header().Set("Location", locationValue)
 //
 		ctx.Response().Header().Set("Content-Type", "application/json")
-//
+//			
+//fmt.
 		return ctx.JSON(http.StatusCreated, nil)
 	}
 }

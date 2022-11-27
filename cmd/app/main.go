@@ -23,8 +23,8 @@ const (
 
 
 func main() {
-	//db, err := sqlx.Connect("postgres", fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", "localhost",5432,"postgres", "postgres", "postgres"))
-	db, err := sqlx.Connect("postgres", os.Getenv("DATABASE_URL"))
+	db, err := sqlx.Connect("postgres", fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", "localhost",5432,"postgres", "postgres", "postgres"))
+	//db, err := sqlx.Connect("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal(fmt.Errorf("error connecting to database: %w", err))
 	}

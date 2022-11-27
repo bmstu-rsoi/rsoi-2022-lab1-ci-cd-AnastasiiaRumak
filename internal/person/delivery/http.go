@@ -74,15 +74,17 @@ func toModel(req request) models.Person {
 func (h *Handler) CreatePerson() echo.HandlerFunc {
 
 	return func(ctx echo.Context) error {
+		//var req request//**
 		var req request//**
 
-		if err := ctx.Bind(req); err != nil {
+		//req := &request{}
+		if err := ctx.Bind(&req); err != nil {
 			//return err
-			return ctx.JSON(http.StatusBadRequest, err)
+			return ctx.JSON(http.StatusBadRequest, &err)
 		}
 		id, err := h.usecase.CreatePerson(context.Background(), toModel(req))
 		if err != nil {
-			return ctx.JSON(http.StatusInternalServerError, err)
+			return ctx.JSON(http.StatusInternalServerError, &err)
 		}		
 		locationValue := fmt.Sprintf(locationValueFormat,id)
 		ctx.Response().Header().Set("Location", locationValue)

@@ -2,7 +2,7 @@ package delivery
 
 import (
 	"net/http"
-	//"errors"
+	"errors"
 	"fmt"
 	"context"
 	"strconv"
@@ -124,13 +124,18 @@ func (h *Handler) UpdatePerson ()  echo.HandlerFunc {
 		}
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 		if err != nil {
-			
+
 			return ctx.JSON(http.StatusBadRequest, nil)
 		}
 		req.ID = id
 
 		update, err := h.usecase.UpdatePerson(context.Background(), toModel(req))
 		if err != nil {
+
+			if errors.Is(err,  errors.New("no person with such ID")) {
+				return ctx.JSON(http.StatusNotFound, nil)
+			}
+
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}
 //
@@ -149,6 +154,9 @@ func (h *Handler) GetPersonID () echo.HandlerFunc {
 
 		model, err := h.usecase.GetPersonID(context.Background(), id)
 		if err != nil {
+			if errors.Is(err,  errors.New("no person with such ID")) {
+				return ctx.JSON(http.StatusNotFound, nil)
+			}
 
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}

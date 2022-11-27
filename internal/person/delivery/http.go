@@ -80,11 +80,11 @@ func (h *Handler) CreatePerson() echo.HandlerFunc {
 		//req := &request{}
 		if err := ctx.Bind(&req); err != nil {
 			//return err
-			return ctx.JSON(http.StatusBadRequest, &err)
+			return ctx.JSON(http.StatusBadRequest, err)
 		}
 		id, err := h.usecase.CreatePerson(context.Background(), toModel(req))
 		if err != nil {
-			return ctx.JSON(http.StatusInternalServerError, &err)
+			return ctx.JSON(http.StatusInternalServerError, err)
 		}		
 		locationValue := fmt.Sprintf(locationValueFormat,id)
 		ctx.Response().Header().Set("Location", locationValue)

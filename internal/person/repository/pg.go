@@ -22,10 +22,13 @@ const (
 
 type PG struct {
 	db *sqlx.DB
+	//db *sql.DB
+
 }
 
 func NewPG(db *sqlx.DB) *PG {
-	return &PG{db: db}
+//func NewPG(db *sql.DB) *PG {
+		return &PG{db: db}
 }
 
 func (p *PG) CreatePerson(ctx context.Context, person models.Person) (int64, error) {
@@ -62,6 +65,8 @@ func (p *PG) GetPersonID(ctx context.Context, id int64) (models.Person, error) {
 
 func (p *PG) GetAll(ctx context.Context) (*[]models.Person, error) {
 	rows, err := p.db.QueryxContext(ctx, selectAll)
+	//rows, err := p.db.QueryContext(ctx, selectAll)
+
 	if err != nil {
 		return nil, err
 	}

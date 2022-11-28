@@ -17,6 +17,26 @@ jobs:
 
       # TODO build, test and deploy project
 
+
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: go build cmd/app/main.go
+
+      - name: Deploy project
+        uses: akhileshns/heroku-deploy@v3.4.6
+        with:
+          heroku_api_key: 5b3fd2e6-8846-41ba-b689-770ba98cb396
+          heroku_app_name: rsoi-lab-11
+          heroku_email: stasia.beliver@gmail.com
+          usedocker: true
+
       - name: Run API Tests
         uses: matt-ball/newman-action@master
         with:

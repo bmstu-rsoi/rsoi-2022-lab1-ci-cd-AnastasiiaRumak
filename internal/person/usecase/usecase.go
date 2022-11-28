@@ -27,13 +27,13 @@ func (u *UseCase) UpdatePerson(ctx context.Context, person models.Person) (model
 		return models.Person{}, err
 	}
 
-	merged := mergePersons(cur, person)
-	err = u.repo.UpdatePerson(ctx, merged)
+	merge := mergePersons(cur, person)
+	err = u.repo.UpdatePerson(ctx, merge)
 	if err != nil {
 		return models.Person{}, err
 	}
 
-	return merged, nil
+	return merge, nil
 }
 
 func mergePersons(cur models.Person, update models.Person) models.Person {

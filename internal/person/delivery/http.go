@@ -48,6 +48,10 @@ type response struct {
 	Address string `json:"address"`
 	Work    string `json:"work"`
 }
+type httpError struct {
+	Message string `json:"message"`
+}
+
 
 func fromModel(m models.Person) response {
 	return response{	
@@ -68,7 +72,6 @@ func toModel(req request) models.Person {
 		Work:    req.Work,
 	}
 }
-
 func (h *Handler) CreatePerson() echo.HandlerFunc {
 
 	return func(ctx echo.Context) error {
@@ -133,8 +136,7 @@ func (h *Handler) UpdatePerson ()  echo.HandlerFunc {
 		if err != nil {
 
 			if errors.Is(err,  errors.New("no person with such ID")) {
-				return ctx.JSON(400, http.StatusNotFound)
-			}
+				return ctx.JSON(http.StatusNotFound, httpError{Message: ""})			}
 
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}
@@ -155,9 +157,8 @@ func (h *Handler) GetPersonID () echo.HandlerFunc {
 		model, err := h.usecase.GetPersonID(context.Background(), id)
 		if err != nil {
 			if errors.Is(err,  errors.New("no person with such ID")) {
-				return ctx.JSON(400, http.StatusNotFound)
+				return ctx.JSON(http.StatusNotFound, httpError{Message: ""})
 			}
-
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}
 //

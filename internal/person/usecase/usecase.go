@@ -22,12 +22,12 @@ func (u *UseCase) DeletePerson(ctx context.Context, id int64) error {
 	return u.repo.DeletePerson(ctx, id)
 }
 func (u *UseCase) UpdatePerson(ctx context.Context, person models.Person) (models.Person, error) {
-	cur, err := u.repo.GetPersonID(ctx, person.ID)
+	c, err := u.repo.GetPersonID(ctx, person.ID)
 	if err != nil {
 		return models.Person{}, err
 	}
 
-	merge := mergePersons(cur, person)
+	merge := mergePersons(c, person)
 	err = u.repo.UpdatePerson(ctx, merge)
 	if err != nil {
 		return models.Person{}, err
@@ -36,29 +36,29 @@ func (u *UseCase) UpdatePerson(ctx context.Context, person models.Person) (model
 	return merge, nil
 }
 
-func mergePersons(cur models.Person, update models.Person) models.Person {
+func mergePersons(c models.Person, update models.Person) models.Person {
 	var name, address, work string
 	var age int64
 
-	name = cur.Name
+	name = c.Name
 	if update.Name != "" {
 		name = update.Name
 	}
-	address = cur.Address
-	if update.Address != "" {
-		address = update.Address
-	}
-	work = cur.Work
-	if update.Work != "" {
-		work = update.Work
-	}
-	age = cur.Age
+	age = c.Age
 	if update.Age != 0 {
 		age = update.Age
 	}
+	address = c.Address
+	if update.Address != "" {
+		address = update.Address
+	}
+	work = c.Work
+	if update.Work != "" {
+		work = update.Work
+	}
 
 	return models.Person{
-		ID:      cur.ID,
+		ID:      c.ID,
 		Name:    name,
 		Age:     age,
 		Address: address,

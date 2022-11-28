@@ -10,7 +10,7 @@ import (
 	"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/models"
 
 )
-
+ 
 const (
 	locationValueFormat = "/api/v1/persons/%d"
 )
@@ -125,7 +125,8 @@ func (h *Handler) DeletePerson() echo.HandlerFunc {
 func (h *Handler) UpdatePerson() echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		var req request//**
-		if err := ctx.Bind(req); err != nil {
+
+		if err := ctx.Bind(&req); err != nil {
 			return ctx.JSON(http.StatusBadRequest, err)
 		}
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
@@ -133,7 +134,6 @@ func (h *Handler) UpdatePerson() echo.HandlerFunc {
 			return ctx.JSON(http.StatusBadRequest, nil)
 		}
 		req.ID = id
-
 		updat, err := h.usecase.UpdatePerson(context.Background(), toModel(req))
 		if err != nil {
 			if errors.Is(err, errors.New("no person with such ID")) {
@@ -141,7 +141,6 @@ func (h *Handler) UpdatePerson() echo.HandlerFunc {
 			}
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}
-
 		ctx.Response().Header().Set("Content-Type", "application/json")
 		return ctx.JSON(http.StatusOK, fromModel(updat))
 	}
@@ -184,24 +183,3 @@ func (h *Handler) GetAll() echo.HandlerFunc {
 		return ctx.JSON(http.StatusOK, respons)
 	}
 }
-
-
-/*
-func (h *Handler) GetPersonID() echo.HandlerFunc {
-	return func(ctx echo.Context) error {
-		var req request
-		if err := ctx.Bind(req); err != nil {
-			return ctx.JSON(http.StatusInternalServerError, err)
-		}
-	id, err := h.usecase.GetPersonID(ctx, toModel(req))
-	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, err)
-
-	}
-	locationValue := fmt.Sprintf(locationValueFormat, id)
-	ctx.Response().Header().Get("Location", locationValue)
-
-	return ctx.JSON(http.StatusCreated, nil)
-	}
-}
-*/

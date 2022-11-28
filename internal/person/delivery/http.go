@@ -129,11 +129,11 @@ func (h *Handler) UpdatePerson ()  echo.HandlerFunc {
 		}
 		req.ID = id
 
-		update, err := h.usecase.UpdatePerson(context.Background(), toModel(req))
+		updated, err := h.usecase.UpdatePerson(context.Background(), toModel(req))
 		if err != nil {
 
 			if errors.Is(err,  errors.New("no person with such ID")) {
-				return ctx.JSON(http.StatusNotFound, "Not Found")
+				return ctx.JSON(http.StatusNotFound, "")
 			}
 
 			return ctx.JSON(http.StatusInternalServerError, err)
@@ -141,7 +141,7 @@ func (h *Handler) UpdatePerson ()  echo.HandlerFunc {
 //
 		ctx.Response().Header().Set("Content-Type", "application/json")
 //		
-		return ctx.JSON(http.StatusOK, fromModel(update))
+		return ctx.JSON(http.StatusOK, fromModel(updated))
 	}
 }
 

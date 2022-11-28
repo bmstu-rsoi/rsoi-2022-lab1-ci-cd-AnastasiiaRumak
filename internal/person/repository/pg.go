@@ -72,7 +72,7 @@ func (p *PG) GetAll(ctx context.Context) (*[]models.Person, error) {
 	}
 	defer rows.Close()
 
-	var persons = make([]models.Person, 0)
+	var persons []models.Person
 	for rows.Next() {
 		var person BDlist
 		err = rows.StructScan(&person)
@@ -84,7 +84,6 @@ func (p *PG) GetAll(ctx context.Context) (*[]models.Person, error) {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-
 	return &persons, nil
 }
 

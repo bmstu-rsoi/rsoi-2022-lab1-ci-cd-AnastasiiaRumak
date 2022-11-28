@@ -7,7 +7,7 @@ import (
 	"context"
 	"strconv"
 	"github.com/labstack/echo/v4"
-	"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/models"
+	//"github.com/bmstu-rsoi/rsoi-2022-lab1-ci-cd-AnastasiiaRumak/internal/models"
 )
 
 const (
@@ -33,45 +33,7 @@ func (h *Handler) Configure(e *echo.Echo) {
 }
 
 
-type request struct {
-	ID      int64  `json:"id"`
-	Name    string `json:"name"`
-	Age     int64    `json:"age"`
-	Address string `json:"address"`
-	Work    string `json:"work"`
-}
 
-type response struct {
-	ID      int64  `json:"id"`
-	Name    string `json:"name"`
-	Age     int64    `json:"age"`
-	Address string `json:"address"`
-	Work    string `json:"work"`
-}
-type httpError struct {
-	Message string `json:"message"`
-}
-
-
-func fromModel(m models.Person) response {
-	return response{	
-		ID:      m.ID,
-		Name:    m.Name,
-		Age:     m.Age,
-		Address: m.Address,
-		Work:    m.Work,
-	}
-}
-
-func toModel(req request) models.Person {
-	return models.Person{
-		ID:      req.ID,
-		Name:    req.Name,
-		Age:     req.Age,
-		Address: req.Address,
-		Work:    req.Work,
-	}
-}
 func (h *Handler) CreatePerson() echo.HandlerFunc {
 
 	return func(ctx echo.Context) error {
@@ -132,18 +94,19 @@ func (h *Handler) UpdatePerson ()  echo.HandlerFunc {
 		}
 		req.ID = id
 
-		updated, err := h.usecase.UpdatePerson(context.Background(), toModel(req))
+		update, err := h.usecase.UpdatePerson(context.Background(), toModel(req))
 		if err != nil {
 
 			if errors.Is(err,  errors.New("no person with such ID")) {
-				return ctx.JSON(http.StatusNotFound, httpError{Message: ""})			}
+				return ctx.JSON(http.StatusNotFound, httpError{Message: ""})
+				}
 
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}
 //
 		ctx.Response().Header().Set("Content-Type", "application/json")
 //		
-		return ctx.JSON(http.StatusOK, fromModel(updated))
+		return ctx.JSON(http.StatusOK, fromModel(update))
 	}
 }
 
@@ -175,14 +138,14 @@ func (h *Handler) GetAll() echo.HandlerFunc {
 			return ctx.JSON(http.StatusInternalServerError, err)
 		}
 
-		var response []response
+		var respons []response
 		for _, p := range *persons {
-			response = append(response, fromModel(p))
+			respons = append(respons, fromModel(p))
 		}
 //
 		ctx.Response().Header().Set("Content-Type", "application/json")
 //
-		return ctx.JSON(http.StatusOK, response)
+		return ctx.JSON(http.StatusOK, respons)
 	}
 }
 

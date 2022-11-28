@@ -60,28 +60,28 @@ func (p *PG) GetPersonID(ctx context.Context, id int64) (models.Person, error) {
 		return models.Person{}, err
 	}
 
-	return toModel(person), nil
+	return toModel(&person), nil
 }
 
 func (p *PG) GetAll(ctx context.Context) (*[]models.Person, error) {
-	rows, err := p.db.QueryxContext(ctx, selectAll)
+	row, err := p.db.QueryxContext(ctx, selectAll)
 	//rows, err := p.db.QueryContext(ctx, selectAll)
 
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer row.Close()
 
 	var persons []models.Person
-	for rows.Next() {
+	for row.Next() {
 		var person BDlist
-		err = rows.StructScan(&person)
+		err = row.StructScan(&person)
 		if err != nil {
 			return nil, err
 		}
-		persons = append(persons, toModel(person))
+		persons = append(persons, toModel(&person))
 	}
-	if err = rows.Err(); err != nil {
+	if err = row.Err(); err != nil {
 		return nil, err
 	}
 	return &persons, nil
@@ -100,7 +100,7 @@ type BDlist struct {
 	Work    string `db:"work"`
 }
 
-func toModel(b BDlist) models.Person {
+func toModel(b *BDlist) models.Person {
 	return models.Person{
 		ID:      b.ID,
 		Name:    b.Name,
